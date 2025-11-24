@@ -15,7 +15,7 @@ public class AuthController {
 
     @GetMapping("/auth/login")
     public Map<String, Object> login(@RequestParam String code) {
-        // TODO: check none by id token from google
+        // TODO: check nonce by id token from google
         return googleOAuthService.exchangeCodeForToken(code);
     }
 }
