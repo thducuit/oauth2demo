@@ -2,5 +2,5 @@ server:
   port: 8081
 google:
   client:
-    id: 908507068136-92mdo0jahv5c5t6fa4tc7o3652dtovpd.apps.googleusercontent.com
-    secret: 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 
+    id:
+    secret:
