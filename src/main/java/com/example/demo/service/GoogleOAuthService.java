@@ -28,7 +28,8 @@ public class GoogleOAuthService {
         body.add("client_secret", clientSecret);
         body.add("redirect_uri", "https://localhost:3000/auth");
         body.add("grant_type", "authorization_code");
-        // Ti: them option de return refresh token
+        body.add("prompt", "consent");
+        body.add("access_type", "offline");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

@@ -1,5 +1,7 @@
 package com.example.demo.api;
 
+import com.example.demo.model.token.AccessToken;
+import com.example.demo.model.token.RefreshToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +22,3 @@ public class AuthController {
     }
 }
 
-class AuthResponse {
-    private String accessToken; // time expire 15 mins
-    private String refreshToken; // time expire 1 day
-}
