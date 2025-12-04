@@ -16,7 +16,18 @@ public class GoogleOAuthService {
     @Value("${google.client.secret}")
     private String clientSecret;
 
-    public Map<String, Object> exchangeCodeForToken(String code) {
+    /**
+     * Response format from Google OAuth token endpoint:
+     * {
+     *   "access_token": "...",
+     *   "refresh_token": "...",
+     *   "expires_in": 3599,
+     *   "scope": "openid email profile",
+     *   "token_type": "Bearer",
+     *   "id_token": "eyJhbGciOiJSUzI1NiIs...",
+     * }
+     */
+    public Map<String, Object> exchangeCodeForToken(String code, String nonce) {
         String tokenUrl = "https://oauth2.googleapis.com/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -44,7 +55,18 @@ public class GoogleOAuthService {
                 Map.class
         );
 
-        return response.getBody();  // access_token, refresh_token, etc.
+        Map<String, Object> tokens = response.getBody();
+
+        if (tokens == null || !tokens.containsKey("id_token")) {
+                throw new RuntimeException("No id_token returned from Google.");
+        }
+
+        String idToken = tokens.get("id_token").toString();
+
+        // TODO: Verify nonce CLAIMS
+        // verifyGoogleIdToken(idToken, nonce);
+
+        return tokens;
     }
 
     public Map<String, Object> refreshAccessToken(String refreshToken) {

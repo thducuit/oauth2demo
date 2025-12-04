@@ -15,10 +15,13 @@ public class AuthController {
     @Autowired
     private GoogleOAuthService googleOAuthService;
 
-    @GetMapping("/auth/login")
-    public Map<String, Object> login(@RequestParam String code) {
-        // TODO: check nonce by id token from google
-        return googleOAuthService.exchangeCodeForToken(code);
-    }
+    @PostMapping("/auth/login")
+    // TODO: them PKCE code challenge
+    public Map<String, Object> login(@RequestBody LoginRequest request) {
+        return googleOAuthService.exchangeCodeForToken(
+                request.getCode(),
+                request.getNonce()
+        );
+    }   
 }
 
