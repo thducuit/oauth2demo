@@ -1,10 +1,8 @@
 package com.example.demo.api;
 
-import com.example.demo.model.token.AccessToken;
-import com.example.demo.model.token.RefreshToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.example.demo.dto.LoginRequest;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 import com.example.demo.service.GoogleOAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,11 @@ public class AuthController {
     private GoogleOAuthService googleOAuthService;
 
     @PostMapping("/auth/login")
-    // TODO: them PKCE code challenge
-    public Map<String, Object> login(@RequestBody LoginRequest request) {
+    public Map<String, Object> login(@RequestBody LoginRequest request) throws Exception {
         return googleOAuthService.exchangeCodeForToken(
                 request.getCode(),
-                request.getNonce()
+                request.getNonce(),
+                request.getCodeVerifier()
         );
     }   
 }
