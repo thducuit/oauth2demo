@@ -11,4 +11,12 @@ public abstract class AbstractToken {
         this.tokenValue = tokenValue;
         this.expiresAt = expiresAt;
     }
+
+    public String getTokenValue() {
+        return tokenValue;
+    }
+
+    public Instant getExpiresAt() {
+        return expiresAt;
+    }
 }
