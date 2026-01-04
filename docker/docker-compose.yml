@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   nginx:
     image: nginx:latest
@@ -14,19 +12,25 @@ services:
       - app3
 
   app1:
-    build: ./app
+    build:
+      context: ..
+      dockerfile: docker/app/Dockerfile
     container_name: app1
     environment:
-      - APP_NAME=APP_1
+      - SPRING_PROFILES_ACTIVE=default
 
   app2:
-    build: ./app
+    build:
+      context: ..
+      dockerfile: docker/app/Dockerfile
     container_name: app2
     environment:
-      - APP_NAME=APP_2
+      - SPRING_PROFILES_ACTIVE=default
 
   app3:
-    build: ./app
+    build:
+      context: ..
+      dockerfile: docker/app/Dockerfile
     container_name: app3
     environment:
-      - APP_NAME=APP_3
+      - SPRING_PROFILES_ACTIVE=default
