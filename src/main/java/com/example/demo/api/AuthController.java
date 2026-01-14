@@ -62,5 +62,14 @@ public class AuthController {
         // TODO: validate access token by filter chain
         return ResponseEntity.ok(Map.of("message", "Test successful"));
     }
+
+    @GetMapping("/dev")
+    public ResponseEntity<Map<String, Object>> dev() {
+        return ResponseEntity.ok(Map.of(
+            "message", "Load balancer test endpoint",
+            "timestamp", System.currentTimeMillis(),
+            "instance", System.getenv().getOrDefault("HOSTNAME", "unknown")
+        ));
+    }
 }
 
