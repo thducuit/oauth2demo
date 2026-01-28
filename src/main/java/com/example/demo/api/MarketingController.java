@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/marketing/campaigns")
+@RequestMapping("/api/marketing/campaigns")
 public class MarketingController {
 
     @GetMapping

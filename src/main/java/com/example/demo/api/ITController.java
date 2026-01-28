@@ -1,12 +1,14 @@
 package com.example.demo.api;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/it/tickets")
+@RequestMapping("/api/it/tickets")
+@PreAuthorize("hasAnyRole('MANAGER', 'CTO')")
 public class ITController {
 
     @GetMapping

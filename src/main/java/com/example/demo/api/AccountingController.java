@@ -1,15 +1,21 @@
 package com.example.demo.api;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/accounting/salaries")
+@RequestMapping("/api/accounting/salaries")
 public class AccountingController {
 
     @GetMapping
+    /* works but too legacy
+    @Secured({"ROLE_USER","ROLE_ADMIN"})
+    */
+//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Map<String, String>> getAll() {
         return ResponseEntity.ok(Map.of("message", "Accounting Department - Get all transactions"));
     }
