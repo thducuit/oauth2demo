@@ -19,10 +19,10 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .addFilterBefore(authenticationFilter(jwtService, sessionService), AnonymousAuthenticationFilter.class)
+//                .addFilterBefore(authenticationFilter(jwtService, sessionService), AnonymousAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/dev").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/auth/**", "/dev").permitAll()
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
