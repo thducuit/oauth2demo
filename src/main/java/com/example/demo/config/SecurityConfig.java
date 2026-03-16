@@ -18,11 +18,15 @@ public class SecurityConfig {
         System.out.println("Hit !!");
 
         http
-                .csrf(csrf -> csrf.disable())
-//                .addFilterBefore(authenticationFilter(jwtService, sessionService), AnonymousAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/auth/**", "/dev").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().permitAll()
+                )
+                .csrf(csrf -> csrf.disable()
+//                        .ignoringRequestMatchers("/h2-console/**")
+                )
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin())
                 );
 
         return http.build();
