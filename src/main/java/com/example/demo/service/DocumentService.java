@@ -26,35 +26,40 @@ public class DocumentService {
     }
 
     @Transactional
+    public Document get(Long id) {
+        return repository.findById(id).get();
+    }
+
+    @Transactional
     public Document create(Document doc) {
 
         Document saved = repository.save(doc);
 
-//        ObjectIdentity oi =
-//                new ObjectIdentityImpl(Document.class, saved.getId());
-//
-//        MutableAcl acl = aclService.createAcl(oi);
-//
-//        Authentication auth =
-//                SecurityContextHolder.getContext().getAuthentication();
-//
-////        Sid sid = new PrincipalSid(auth);
-//
+        ObjectIdentity oi =
+                new ObjectIdentityImpl(Document.class, saved.getId());
+
+        MutableAcl acl = aclService.createAcl(oi);
+
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        Sid sid = new PrincipalSid(auth);
+
 //        String username = SecurityContextHolder.getContext()
 //                .getAuthentication()
 //                .getName();
-//
-//        acl.insertAce(
-//                acl.getEntries().size(),
-//                BasePermission.ADMINISTRATION,
-//                new PrincipalSid(username),
-//                true
-//        );
-//
-//
-//
+
+        acl.insertAce(
+                acl.getEntries().size(),
+                BasePermission.ADMINISTRATION,
+                sid,
+                true
+        );
+
+
+
 //        acl.setOwner(new PrincipalSid(username));
-//        aclService.updateAcl(acl);
+        aclService.updateAcl(acl);
 
         return saved;
     }
