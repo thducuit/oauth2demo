@@ -8,6 +8,7 @@ import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,27 +41,55 @@ public class DocumentService {
 
         MutableAcl acl = aclService.createAcl(oi);
 
-        Authentication auth =
-                SecurityContextHolder.getContext().getAuthentication();
+//        Authentication auth =
+//                SecurityContextHolder.getContext().getAuthentication();
 
-        Sid sid = new PrincipalSid(auth);
+//        Sid sid = new PrincipalSid(auth);
 
-//        String username = SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getName();
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Sid sid = new PrincipalSid(username);
+        acl.setOwner(sid);
+
+        // grant permissions
+        acl.insertAce(acl.getEntries().size(), BasePermission.READ, sid, true);
+        acl.insertAce(acl.getEntries().size(), BasePermission.WRITE, sid, true);
+        acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, sid, true);
+
+        aclService.updateAcl(acl);
+
+        return saved;
+    }
+
+    @Transactional
+    public void grantPermission(Long id, String username, String permission) {
+
+        ObjectIdentity oi = new ObjectIdentityImpl(Document.class, id);
+
+        MutableAcl acl = (MutableAcl) aclService.readAclById(oi);
+
+        Sid sid = new PrincipalSid(username);
+
+        Permission perm = mapPermission(permission);
 
         acl.insertAce(
                 acl.getEntries().size(),
-                BasePermission.ADMINISTRATION,
+                perm,
                 sid,
                 true
         );
 
-
-
-//        acl.setOwner(new PrincipalSid(username));
         aclService.updateAcl(acl);
+    }
 
-        return saved;
+    private Permission mapPermission(String permission) {
+        return switch (permission.toUpperCase()) {
+            case "READ" -> BasePermission.READ;
+            case "WRITE" -> BasePermission.WRITE;
+            case "ADMIN" -> BasePermission.ADMINISTRATION;
+            case "DELETE" -> BasePermission.DELETE;
+            default -> throw new IllegalArgumentException("Invalid permission");
+        };
     }
 }

@@ -18,7 +18,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasPermission(#id, 'Document', 'READ')")
+    @PreAuthorize("hasPermission(#id, 'com.example.demo.model.Document', 'READ')")
     public Document get(@PathVariable Long id) {
         return documentService.get(id);
     }
@@ -26,5 +26,13 @@ public class DocumentController {
     @PostMapping
     public Document create(@RequestBody Document doc) {
         return documentService.create(doc);
+    }
+
+    @PostMapping("/{id}/grant")
+    @PreAuthorize("hasPermission(#id, 'com.example.demo.model.Document', 'ADMINISTRATION')")
+    public void grantPermission(@PathVariable Long id,
+                                @RequestParam String user,
+                                @RequestParam String permission) {
+        documentService.grantPermission(id, user, permission);
     }
 }
